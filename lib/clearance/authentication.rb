@@ -89,12 +89,16 @@ module Clearance
     #
     # @param [String] optional flash message to display to denied user
     def deny_access(flash_message = nil)
-      store_location
-      flash[:notice] = flash_message if flash_message
-      if signed_in?
-        respond_with({}, :location => url_after_denied_access_when_signed_in)
+      if (request.format == :json)
+        respond_with({}, :status => :unauthorized)
       else
-        respond_with({}, :location => url_after_denied_access_when_signed_out)
+        store_location
+        flash[:notice] = flash_message if flash_message
+        if signed_in?
+          respond_with({}, :location => url_after_denied_access_when_signed_in)
+        else
+          respond_with({}, :location => url_after_denied_access_when_signed_out)
+        end
       end
     end
 
