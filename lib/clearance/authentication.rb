@@ -92,9 +92,9 @@ module Clearance
       store_location
       flash[:notice] = flash_message if flash_message
       if signed_in?
-        redirect_to(url_after_denied_access_when_signed_in)
+        respond_with({}, :location => url_after_denied_access_when_signed_in)
       else
-        redirect_to(url_after_denied_access_when_signed_out)
+        respond_with({}, :location => url_after_denied_access_when_signed_out)
       end
     end
 
